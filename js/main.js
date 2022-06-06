@@ -2,7 +2,7 @@ const OFFER_COUNT = 10;
 const [INITIAL_PRICE, FINAL_PRICE] = [1500, 10000];
 const [MIN_GUESTS, MAX_GUESTS] = [1, 12];
 const [MIN_ROOMS, MAX_ROOMS] = [1, 9];
-const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIME_TABLE = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = [
@@ -13,19 +13,17 @@ const PHOTOS = [
 const [LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER] = [35.65000, 35.70000];
 const [LONGITUDE_INITIAL_NUMBER, LONGITUDE_FINAL_NUMBER] = [139.70000, 139.80000];
 
-function checkPositiveArray(initialNumber, finalNumber) {
-  return (initialNumber < 0 || finalNumber < 0) ? 0 : 1;
-}
+const checkPositiveArray = (initialNumber, finalNumber) => (initialNumber < 0 || finalNumber < 0) ? 0 : 1;
 
-function swapValues(initialNumber, finalNumber) {
+const swapValues = (initialNumber, finalNumber) => {
   if (finalNumber < initialNumber) {
     finalNumber = [initialNumber, initialNumber = finalNumber][0];
   }
 
   return [initialNumber, finalNumber];
-}
+};
 
-function getRandomPositiveInteger (initialNumber, finalNumber) {
+const getRandomPositiveInteger = (initialNumber, finalNumber) => {
   if (checkPositiveArray(initialNumber, finalNumber) === 0) {
     return;
   }
@@ -36,9 +34,9 @@ function getRandomPositiveInteger (initialNumber, finalNumber) {
   finalNumber = Math.floor(finalNumber);
 
   return Math.floor(Math.random() * (finalNumber - initialNumber + 1)) + initialNumber;
-}
+};
 
-function getRandomPositiveFloat (initialNumber, finalNumber, presicion = 5) {
+const getRandomPositiveFloat = (initialNumber, finalNumber, presicion = 5) => {
   if (checkPositiveArray(initialNumber, finalNumber) === 0) {
     return;
   }
@@ -46,9 +44,9 @@ function getRandomPositiveFloat (initialNumber, finalNumber, presicion = 5) {
   [initialNumber, finalNumber] = swapValues(initialNumber, finalNumber);
 
   return (Math.random() * (finalNumber - initialNumber) + initialNumber).toFixed(presicion);
-}
+};
 
-function createAvatarAdress (length) {
+const createAvatarAdress = (length) => {
   const randomNumber = getRandomPositiveInteger(1, length);
 
   return(
@@ -56,13 +54,11 @@ function createAvatarAdress (length) {
       `img/avatars/user0${randomNumber}.png` :
       `img/avatars/user${randomNumber}.png`
   );
-}
+};
 
-function createElement (elements) {
-  return elements[getRandomPositiveInteger(0, elements.length - 1)];
-}
+const createElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-function createRandomArray (elements) {
+const createRandomArray = (elements) => {
   const lengthArray = getRandomPositiveInteger(1, elements.length);
   const newArray = [];
   do {
@@ -72,9 +68,9 @@ function createRandomArray (elements) {
     }
   } while (newArray.length < lengthArray);
   return newArray;
-}
+};
 
-function createOfferObject() {
+const createOfferObject = () => {
   const latitude = getRandomPositiveFloat(LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER);
   const longitude = getRandomPositiveFloat(LONGITUDE_INITIAL_NUMBER, LONGITUDE_FINAL_NUMBER);
 
@@ -86,7 +82,7 @@ function createOfferObject() {
       title: 'Аренда квартиры на длительный срок',
       address: `${latitude}, ${longitude}`,
       price: getRandomPositiveInteger(INITIAL_PRICE, FINAL_PRICE),
-      type: createElement (TYPE),
+      type: createElement (TYPES),
       rooms: getRandomPositiveInteger(MIN_ROOMS, MAX_ROOMS),
       guests: getRandomPositiveInteger(MIN_GUESTS, MAX_GUESTS),
       checkin: createElement(TIME_TABLE),
@@ -100,8 +96,7 @@ function createOfferObject() {
       lng: longitude,
     },
   });
-}
+};
 
 const offers = Array.from({length: OFFER_COUNT}, createOfferObject);
-console.log(offers);
-
+offers.join();
