@@ -10,7 +10,7 @@ const swapValues = (initialNumber, finalNumber) => {
 
 const getRandomPositiveInteger = (initialNumber, finalNumber) => {
   if (checkPositiveArray(initialNumber, finalNumber) === 0) {
-    return;
+    throw 'Negative array';
   }
 
   [initialNumber, finalNumber] = swapValues(initialNumber, finalNumber);
@@ -23,7 +23,7 @@ const getRandomPositiveInteger = (initialNumber, finalNumber) => {
 
 const getRandomPositiveFloat = (initialNumber, finalNumber, presicion = 5) => {
   if (checkPositiveArray(initialNumber, finalNumber) === 0) {
-    return;
+    throw 'Negative array';
   }
 
   [initialNumber, finalNumber] = swapValues(initialNumber, finalNumber);
@@ -31,15 +31,27 @@ const getRandomPositiveFloat = (initialNumber, finalNumber, presicion = 5) => {
   return (Math.random() * (finalNumber - initialNumber) + initialNumber).toFixed(presicion);
 };
 
-const createAvatarAdress = (length) => {
-  const randomNumber = getRandomPositiveInteger(1, length);
+function createAvatarAdress(length) {
+  const reservedArray = [];
 
-  return(
-    (randomNumber < length) ?
-      `img/avatars/user0${randomNumber}.png` :
-      `img/avatars/user${randomNumber}.png`
-  );
-};
+  return function generateAvatarAdress() {
+    const randomNumber = getRandomPositiveInteger(1, length);
+
+    if (!(reservedArray.includes(randomNumber))) {
+      reservedArray.push(randomNumber);
+
+      return (randomNumber < 10) ?
+        `img/avatars/user0${randomNumber}.png` :
+        `img/avatars/user${randomNumber}.png`;
+    }
+
+    if (reservedArray.length === length) {
+      return;
+    }
+
+    return generateAvatarAdress();
+  };
+}
 
 const createElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
@@ -60,4 +72,5 @@ export {
   getRandomPositiveFloat,
   createAvatarAdress,
   createElement,
-  createRandomArray};
+  createRandomArray
+};

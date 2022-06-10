@@ -6,7 +6,7 @@ import {
   createRandomArray
 } from './util.js';
 
-const OFFER_COUNT = 10;
+const OFFER_COUNT = 1;
 const [INITIAL_PRICE, FINAL_PRICE] = [1500, 10000];
 const [MIN_GUESTS, MAX_GUESTS] = [1, 12];
 const [MIN_ROOMS, MAX_ROOMS] = [1, 9];
@@ -20,6 +20,15 @@ const PHOTOS = [
 ];
 const [LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER] = [35.65000, 35.70000];
 const [LONGITUDE_INITIAL_NUMBER, LONGITUDE_FINAL_NUMBER] = [139.70000, 139.80000];
+const apartments = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
+};
+
+const randomAvatarAdress = createAvatarAdress(OFFER_COUNT);
 
 const createOfferObject = () => {
   const latitude = getRandomPositiveFloat(LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER);
@@ -27,7 +36,7 @@ const createOfferObject = () => {
 
   return ({
     author: {
-      avatar: createAvatarAdress(OFFER_COUNT),
+      avatar: randomAvatarAdress(),
     },
     offer: {
       title: 'Аренда квартиры на длительный срок',
@@ -49,6 +58,9 @@ const createOfferObject = () => {
   });
 };
 
-const createOffers = () => Array.from({length: OFFER_COUNT}, createOfferObject);
+const createOffers = (count) => Array.from({length: count}, createOfferObject);
 
-export {createOffers};
+export {
+  createOffers,
+  OFFER_COUNT,
+  apartments};
