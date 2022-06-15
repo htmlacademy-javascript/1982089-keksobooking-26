@@ -20,7 +20,7 @@ const PHOTOS = [
 ];
 const [LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER] = [35.65000, 35.70000];
 const [LONGITUDE_INITIAL_NUMBER, LONGITUDE_FINAL_NUMBER] = [139.70000, 139.80000];
-const apartments = {
+const Apartment = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -42,7 +42,7 @@ const createOfferObject = () => {
       title: 'Аренда квартиры на длительный срок',
       address: `${latitude}, ${longitude}`,
       price: getRandomPositiveInteger(INITIAL_PRICE, FINAL_PRICE),
-      type: createElement (TYPES),
+      type: createElement(TYPES),
       rooms: getRandomPositiveInteger(MIN_ROOMS, MAX_ROOMS),
       guests: getRandomPositiveInteger(MIN_GUESTS, MAX_GUESTS),
       checkin: createElement(TIME_TABLE),
@@ -63,4 +63,5 @@ const createOffers = (count) => Array.from({length: count}, createOfferObject);
 export {
   createOffers,
   OFFER_COUNT,
-  apartments};
+  Apartment,
+};
