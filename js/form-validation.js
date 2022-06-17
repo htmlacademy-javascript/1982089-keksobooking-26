@@ -7,6 +7,8 @@ const ApartmentCapacity = {
   '3': ['1', '2', '3'],
   '100': ['0'],
 };
+const [minSymbolsTitle, maxSymbolsTitle] = [30, 100];
+const [minPrice, maxPrice] = [0, 100000];
 
 const pristine = new Pristine(offerForm, {
   classTo: 'ad-form__element',
@@ -18,24 +20,12 @@ const pristine = new Pristine(offerForm, {
 });
 
 function validateOfferTitle(value) {
-  return (value.length >= 30 && value.length <= 100);
+  return (value.length >= minSymbolsTitle && value.length <= maxSymbolsTitle);
 }
 
 function validateOfferPrice(value) {
-  return ((value.length) && (Number(value) >= 0 && Number(value) <= 100000));
+  return ((value.length) && (Number(value) >= minPrice && Number(value) <= maxPrice));
 }
-
-pristine.addValidator(
-  offerForm.querySelector('#title'),
-  validateOfferTitle,
-  'Заголовок должен содержать от 30 до 100 символов'
-);
-
-pristine.addValidator(
-  offerForm.querySelector('#price'),
-  validateOfferPrice,
-  'Цена должна быть менее 100 000'
-);
 
 function validateOfferCapacity() {
   return ApartmentCapacity[roomsField.value].includes(capacityField.value);
@@ -51,6 +41,18 @@ function getErrorCapacityMessage() {
       return 'Недоступно для гостей.';
   }
 }
+
+pristine.addValidator(
+  offerForm.querySelector('#title'),
+  validateOfferTitle,
+  'Заголовок должен содержать от 30 до 100 символов'
+);
+
+pristine.addValidator(
+  offerForm.querySelector('#price'),
+  validateOfferPrice,
+  'Цена должна быть менее 100 000'
+);
 
 pristine.addValidator(
   roomsField,
