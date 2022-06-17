@@ -1,3 +1,5 @@
+import './form-validation.js';
+
 const switchToDisableForm = () => {
   document.querySelector('.ad-form').classList.add('ad-form--disabled');
   const fieldsetFormList = document.querySelector('.ad-form').querySelectorAll('fieldset');

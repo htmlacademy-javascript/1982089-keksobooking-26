@@ -1,2 +1,2 @@
-import './create-offer-element.js';
+import './map.js';
 import './form.js';
