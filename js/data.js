@@ -6,7 +6,7 @@ import {
   createRandomArray
 } from './util.js';
 
-const OFFER_COUNT = 1;
+const OFFER_COUNT = 10;
 const [INITIAL_PRICE, FINAL_PRICE] = [1500, 10000];
 const [MIN_GUESTS, MAX_GUESTS] = [1, 12];
 const [MIN_ROOMS, MAX_ROOMS] = [1, 9];

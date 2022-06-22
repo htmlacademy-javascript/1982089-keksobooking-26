@@ -96,3 +96,5 @@ offerForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
+export {MinPrice, MAX_PRICE, typeField, priceField};
