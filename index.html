@@ -2,9 +2,11 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="./css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./leaflet/leaflet.css">
+  <link rel="stylesheet" href="./nouislider/nouislider.css">
   <title>Кексобукинг</title>
 </head>
 <body>
@@ -91,13 +93,13 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" value="23.3424, 23.4234" readonly>
+          <input id="address" name="address" type="text" value="35.68172, 139.75392" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
-            <option value="bungalow">Бунгало</option>
-            <option value="flat" selected>Квартира</option>
+            <option value="bungalow" selected>Бунгало</option>
+            <option value="flat">Квартира</option>
             <option value="hotel">Отель</option>
             <option value="house">Дом</option>
             <option value="palace">Дворец</option>
@@ -230,6 +232,8 @@
   </template>
 
   <script src="./pristine/pristine.min.js"></script>
+  <script src="./leaflet/leaflet.js"></script>
+  <script src="./nouislider/nouislider.js"></script>
   <script src="./js/main.js" type="module"></script>
 </body>
 </html>

@@ -23,4 +23,5 @@ const switchToEnabledForm = () => {
 };
 
 switchToDisableForm();
-switchToEnabledForm();
+
+export {switchToEnabledForm};
