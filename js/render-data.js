@@ -10,6 +10,8 @@ import {
   checkContentExistence,
 } from './util.js';
 
+const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
+const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 const offersList = document.querySelector('.map__canvas');
 const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
 const availableOffers = createOffers(OFFER_COUNT);
@@ -17,8 +19,6 @@ const offerListFragment = document.createDocumentFragment();
 
 availableOffers.forEach((availableOffer) => {
   const offerElement = offerTemplate.cloneNode(true);
-  const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
-  const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 
   checkContentExistence(availableOffer.offer, OFFER_COMBINED_TEXT_KEYS);
   const [rooms, guests] = hideTextContent(availableOffer.offer.rooms, availableOffer.offer.guests);

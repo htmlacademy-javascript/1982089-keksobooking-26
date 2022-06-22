@@ -3,9 +3,9 @@ import {availableOffers} from './render-data.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
 const addressField = document.querySelector('#address');
-const COORDINATE_PRESICION = 6;
+const COORDINATE_PRESICION = 5;
 const MAP_ZOOM = 13;
-const [INITIAL_LAT, INITIAL_LNG] = [35.681729, 139.753927];
+const [INITIAL_LAT, INITIAL_LNG] = [35.68172, 139.75392];
 
 const map = L.map('map-canvas')
   .on('load', () => {
