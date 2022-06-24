@@ -40,6 +40,10 @@ priceField.addEventListener('change', () => {
   slider.noUiSlider.set(priceField.value);
 });
 
-resetButton.addEventListener('click', () => {
+const resetSlider = () => {
   slider.noUiSlider.set(MinPrice[typeField.value]);
-});
+};
+
+resetButton.addEventListener('click', resetSlider());
+
+export {resetSlider};

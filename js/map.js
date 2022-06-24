@@ -1,5 +1,4 @@
 import {switchToEnabledForm} from './form.js';
-import {availableOffers} from './render-data.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
 const addressField = document.querySelector('#address');
@@ -51,7 +50,7 @@ mainMarker.on('moveend', (evt) => {
   addressField.value = `${actualCoordinate.lat.toFixed(COORDINATE_PRESICION)}, ${actualCoordinate.lng.toFixed(COORDINATE_PRESICION)}`;
 });
 
-resetButton.addEventListener('click', () => {
+const resetMap = () => {
   mainMarker.setLatLng({
     lat: INITIAL_LAT,
     lng: INITIAL_LNG,
@@ -61,11 +60,11 @@ resetButton.addEventListener('click', () => {
     lat: INITIAL_LAT,
     lng: INITIAL_LNG,
   }, MAP_ZOOM);
-});
+};
 
-const offerList = document.querySelectorAll('.popup');
+resetButton.addEventListener('click', resetMap);
 
-const createMarkers = (lat, lng, index) => {
+const createMarkers = (lat, lng, index, popup) => {
   const marker = L.marker(
     {
       lat,
@@ -78,12 +77,17 @@ const createMarkers = (lat, lng, index) => {
 
   marker
     .addTo(map)
-    .bindPopup(offerList[index]);
+    .bindPopup(popup);
 };
 
-availableOffers.slice(0, 10).forEach((element, index) => {
-  createMarkers(element.location.lat, element.location.lng, index);
-});
+const createOffersMarker = (availableOffers) => {
+  const offerList = document.querySelectorAll('.popup');
+  availableOffers.forEach((element, index) => {
+    createMarkers(element.location.lat, element.location.lng, index, offerList[index]);
+  });
+};
 
 const markerGroup = L.layerGroup().addTo(map);
 markerGroup.clearLayers();
+
+export {createOffersMarker, resetMap};

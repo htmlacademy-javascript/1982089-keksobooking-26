@@ -1,3 +1,8 @@
+import {resetSlider} from './slider.js';
+import {resetMap} from './map.js';
+import {isEscapeKey} from './util.js';
+import {sendData} from './api.js';
+
 const offerForm = document.querySelector('.ad-form');
 const roomsField = offerForm.querySelector('#room_number');
 const capacityField = offerForm.querySelector('#capacity');
@@ -20,6 +25,7 @@ const MinPrice = {
   'house': 5000,
   'palace': 10000,
 };
+const submitButton = document.querySelector('.ad-form__submit');
 
 const pristine = new Pristine(offerForm, {
   classTo: 'ad-form__element',
@@ -28,7 +34,7 @@ const pristine = new Pristine(offerForm, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error'
-});
+}, false);
 
 function validateOfferTitle(value) {
   return (value.length >= MIN_SYMBOLS_TITLE && value.length <= MAX_SYMBOLS_TITLE);
@@ -92,9 +98,81 @@ timeinField.addEventListener('change', () => {
   timeoutField.value = timeinField.value;
 });
 
+const resetForm = () => {
+  offerForm.reset();
+  resetSlider();
+  resetMap();
+};
+
+const closeMessage = (element) => {
+  const outsideClickListener = (evt) => {
+    const textElement = element.querySelector('p');
+    if (!textElement.contains(evt.target)) {
+      document.body.removeChild(element);
+      document.removeEventListener('click', outsideClickListener);
+    }
+  };
+
+  const escapeButtonListener = () => {
+    document.body.removeChild(element);
+    document.removeEventListener('keydown', escapeButtonListener);
+  };
+
+  const escapeKeydownListener = (evt) => {
+    if (isEscapeKey(evt)) {
+      document.body.removeChild(element);
+      document.removeEventListener('keydown', escapeKeydownListener);
+    }
+  };
+  document.addEventListener('click', outsideClickListener);
+  document.addEventListener('keydown', escapeKeydownListener);
+  const errorButton = element.querySelector('.error__button');
+  if (errorButton) {
+    errorButton.addEventListener('click', escapeButtonListener);
+  }
+};
+
+const showSuccessMessage = () => {
+  const messageContainer = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  document.body.append(messageContainer);
+  closeMessage(messageContainer);
+};
+
+const showErrorMessage = () => {
+  const messageContainer = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  document.body.append(messageContainer);
+  closeMessage(messageContainer);
+};
+
+const blockSubmitButton = () => {
+  submitButton.setAttribute('disabled', 'disabled');
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.removeAttribute('disabled');
+  submitButton.textContent = 'Опубликовать';
+};
+
 offerForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        resetForm();
+        showSuccessMessage();
+        unblockSubmitButton();
+      },
+      () => {
+        showErrorMessage();
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  }
 });
 
 export {MinPrice, MAX_PRICE, typeField, priceField};

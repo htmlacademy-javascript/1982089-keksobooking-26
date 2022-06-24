@@ -97,6 +97,7 @@ const checkContentExistence = (offerElement, offerKeys) => {
   }
 };
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {
   getRandomPositiveInteger,
@@ -107,4 +108,5 @@ export {
   checkElementTextContent,
   hideTextContent,
   checkContentExistence,
+  isEscapeKey,
 };
