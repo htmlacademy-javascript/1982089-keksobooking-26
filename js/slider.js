@@ -1,4 +1,9 @@
-import {MinPrice, MAX_PRICE, typeField, priceField} from './form-validation.js';
+import {
+  MinPrice,
+  MAX_PRICE,
+  typeField,
+  priceField
+} from './form-validation.js';
 
 const slider = document.querySelector('.ad-form__slider');
 const resetButton = document.querySelector('.ad-form__reset');
@@ -40,6 +45,10 @@ priceField.addEventListener('change', () => {
   slider.noUiSlider.set(priceField.value);
 });
 
-resetButton.addEventListener('click', () => {
+const resetSlider = () => {
   slider.noUiSlider.set(MinPrice[typeField.value]);
-});
+};
+
+resetButton.addEventListener('click', resetSlider());
+
+export {resetSlider};
