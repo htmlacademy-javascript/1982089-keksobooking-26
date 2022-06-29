@@ -6,7 +6,6 @@ import {
 } from './form-validation.js';
 
 const slider = document.querySelector('.ad-form__slider');
-const resetButton = document.querySelector('.ad-form__reset');
 
 noUiSlider.create(slider, {
   range: {
@@ -48,7 +47,5 @@ priceField.addEventListener('change', () => {
 const resetSlider = () => {
   slider.noUiSlider.set(MinPrice[typeField.value]);
 };
-
-resetButton.addEventListener('click', resetSlider());
 
 export {resetSlider};

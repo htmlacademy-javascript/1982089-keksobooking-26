@@ -1,6 +1,5 @@
 import {switchToEnabledForm} from './form.js';
 
-const resetButton = document.querySelector('.ad-form__reset');
 const addressField = document.querySelector('#address');
 const COORDINATE_PRESICION = 5;
 const MAP_ZOOM = 13;
@@ -21,6 +20,8 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+const markerGroup = L.layerGroup().addTo(map);
 
 const mapIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -51,6 +52,7 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const resetMap = () => {
+  map.closePopup();
   mainMarker.setLatLng({
     lat: INITIAL_LAT,
     lng: INITIAL_LNG,
@@ -61,8 +63,6 @@ const resetMap = () => {
     lng: INITIAL_LNG,
   }, MAP_ZOOM);
 };
-
-resetButton.addEventListener('click', resetMap);
 
 const createMarkers = (lat, lng, index, popup) => {
   const marker = L.marker(
@@ -76,18 +76,17 @@ const createMarkers = (lat, lng, index, popup) => {
   );
 
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(popup);
 };
 
 const createOffersMarker = (availableOffers) => {
+  map.closePopup();
+  markerGroup.clearLayers();
   const offerList = document.querySelectorAll('.popup');
   availableOffers.forEach((element, index) => {
     createMarkers(element.location.lat, element.location.lng, index, offerList[index]);
   });
 };
-
-const markerGroup = L.layerGroup().addTo(map);
-markerGroup.clearLayers();
 
 export {createOffersMarker, resetMap};

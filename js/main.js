@@ -1,15 +1,23 @@
 import './slider.js';
-import './form.js';
-import {createOffersMarker} from './map.js';
+import {setFilterClick} from './form.js';
 import {getData} from './api.js';
 import {renderOffers} from './render-data.js';
+import {resetForm} from './form-validation.js';
+import {debounce} from './util.js';
 
-const VISIBLE_OFFER_COUNT = 10;
 const ALERT_SHOW_TIME = 6000;
+const RERENDER_DELAY = 500;
 
 getData((offers) => {
-  renderOffers(offers.slice(0, VISIBLE_OFFER_COUNT));
-  createOffersMarker(offers.slice(0, VISIBLE_OFFER_COUNT));
+  renderOffers(offers);
+  setFilterClick(debounce(
+    () => renderOffers(offers),
+    RERENDER_DELAY,
+  ));
+  resetForm(debounce(
+    () => renderOffers(offers),
+    RERENDER_DELAY,
+  ));
 }, (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '10';

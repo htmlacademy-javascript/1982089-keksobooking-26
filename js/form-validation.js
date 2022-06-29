@@ -3,7 +3,10 @@ import {resetMap} from './map.js';
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
 
+
+const resetButton = document.querySelector('.ad-form__reset');
 const offerForm = document.querySelector('.ad-form');
+const filterForm = document.querySelector('.map__filters');
 const roomsField = offerForm.querySelector('#room_number');
 const capacityField = offerForm.querySelector('#capacity');
 const priceField = offerForm.querySelector('#price');
@@ -34,7 +37,7 @@ const pristine = new Pristine(offerForm, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error'
-}, false);
+});
 
 function validateOfferTitle(value) {
   return (value.length >= MIN_SYMBOLS_TITLE && value.length <= MAX_SYMBOLS_TITLE);
@@ -98,10 +101,14 @@ timeinField.addEventListener('change', () => {
   timeoutField.value = timeinField.value;
 });
 
-const resetForm = () => {
-  offerForm.reset();
-  resetSlider();
-  resetMap();
+const resetForm = (cb) => {
+  resetButton.addEventListener('click', () => {
+    offerForm.reset();
+    filterForm.reset();
+    resetSlider();
+    resetMap();
+    cb();
+  });
 };
 
 const closeMessage = (element) => {
@@ -175,4 +182,4 @@ offerForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {MinPrice, MAX_PRICE, typeField, priceField};
+export {MinPrice, MAX_PRICE, typeField, priceField, resetForm};
