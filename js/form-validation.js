@@ -2,6 +2,7 @@ import {resetSlider} from './slider.js';
 import {resetMap} from './map.js';
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
+import {resetAllImages} from './avatar.js';
 
 
 const resetButton = document.querySelector('.ad-form__reset');
@@ -101,15 +102,22 @@ timeinField.addEventListener('change', () => {
   timeoutField.value = timeinField.value;
 });
 
-const resetForm = (cb) => {
-  resetButton.addEventListener('click', () => {
-    offerForm.reset();
-    filterForm.reset();
-    resetSlider();
-    resetMap();
-    cb();
-  });
+const resetForm = () => {
+  offerForm.reset();
+  filterForm.reset();
+  resetSlider();
+  resetMap();
+  resetAllImages();
 };
+
+const updateForm = (cb) => {
+  resetForm();
+  cb();
+};
+
+resetButton.addEventListener('click', () => {
+  resetForm();
+});
 
 const closeMessage = (element) => {
   const outsideClickListener = (evt) => {
@@ -182,4 +190,4 @@ offerForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {MinPrice, MAX_PRICE, typeField, priceField, resetForm};
+export {MinPrice, MAX_PRICE, typeField, priceField, updateForm};
