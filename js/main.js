@@ -1,8 +1,9 @@
 import './slider.js';
+import './avatar.js';
 import {setFilterClick} from './form.js';
 import {getData} from './api.js';
 import {renderOffers} from './render-data.js';
-import {resetForm} from './form-validation.js';
+import {updateForm} from './form-validation.js';
 import {debounce} from './util.js';
 
 const ALERT_SHOW_TIME = 6000;
@@ -14,7 +15,7 @@ getData((offers) => {
     () => renderOffers(offers),
     RERENDER_DELAY,
   ));
-  resetForm(debounce(
+  updateForm(debounce(
     () => renderOffers(offers),
     RERENDER_DELAY,
   ));
