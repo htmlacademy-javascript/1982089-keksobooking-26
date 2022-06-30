@@ -6,6 +6,11 @@ import {
 
 import {createOffersMarker} from './map.js';
 
+const VISIBLE_OFFER_COUNT = 10;
+const [INITAL_FILTER_PRICE, FINAL_FILTER_PRICE] = [10000, 50000];
+const DEFAULT_FILTER_VALUE = 'any';
+const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
+const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 const Apartment = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -13,23 +18,19 @@ const Apartment = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
-const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
-const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 const offersList = document.querySelector('.map__canvas');
 const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
 const offerListFragment = document.createDocumentFragment();
-const VISIBLE_OFFER_COUNT = 10;
-const [INITAL_FILTER_PRICE, FINAL_FILTER_PRICE] = [10000, 50000];
 
 const filterTypeApartment = (element) => {
   const typeFilterValue = document.querySelector('#housing-type').querySelector('option:checked').value;
-  return (typeFilterValue === 'any') ? true : (element.offer.type === typeFilterValue);
+  return (typeFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.type === typeFilterValue);
 };
 
 const filterPricaApartment = (element) => {
   const priceFilterValue = document.querySelector('#housing-price').querySelector('option:checked').value;
   switch (priceFilterValue) {
-    case 'any':
+    case DEFAULT_FILTER_VALUE:
       return true;
     case 'middle':
       return ((element.offer.price >= INITAL_FILTER_PRICE) && (element.offer.price <= FINAL_FILTER_PRICE));
@@ -38,17 +39,17 @@ const filterPricaApartment = (element) => {
     case 'high':
       return (element.offer.price > FINAL_FILTER_PRICE);
   }
-  return (priceFilterValue === 'any') ? true : (element.offer.rooms === Number(priceFilterValue));
+  return (priceFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.rooms === Number(priceFilterValue));
 };
 
 const filterRoomsNumber = (element) => {
   const roomsFilterValue = document.querySelector('#housing-rooms').querySelector('option:checked').value;
-  return (roomsFilterValue === 'any') ? true : (element.offer.rooms === Number(roomsFilterValue));
+  return (roomsFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.rooms === Number(roomsFilterValue));
 };
 
 const filterGuestsNumber = (element) => {
   const guestsFilterValue = document.querySelector('#housing-guests').querySelector('option:checked').value;
-  return (guestsFilterValue === 'any') ? true : (element.offer.guests === Number(guestsFilterValue));
+  return (guestsFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.guests === Number(guestsFilterValue));
 };
 
 const filterBenefits = (element) => {
