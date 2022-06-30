@@ -4,6 +4,13 @@ import {
   checkContentExistence,
 } from './util.js';
 
+import {createOffersMarker} from './map.js';
+
+const VISIBLE_OFFER_COUNT = 10;
+const [INITAL_FILTER_PRICE, FINAL_FILTER_PRICE] = [10000, 50000];
+const DEFAULT_FILTER_VALUE = 'any';
+const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
+const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 const Apartment = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -11,14 +18,61 @@ const Apartment = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
-const OFFER_TEXT_CLASSES = ['title', 'text--address', 'text--price', 'type', 'text--capacity', 'text--time', 'description'];
-const OFFER_COMBINED_TEXT_KEYS = ['price', 'rooms', 'guests', 'checkin', 'checkout'];
 const offersList = document.querySelector('.map__canvas');
 const offerTemplate = document.querySelector('#card').content.querySelector('.popup');
 const offerListFragment = document.createDocumentFragment();
 
+const filterTypeApartment = (element) => {
+  const typeFilterValue = document.querySelector('#housing-type').querySelector('option:checked').value;
+  return (typeFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.type === typeFilterValue);
+};
+
+const filterPricaApartment = (element) => {
+  const priceFilterValue = document.querySelector('#housing-price').querySelector('option:checked').value;
+  switch (priceFilterValue) {
+    case DEFAULT_FILTER_VALUE:
+      return true;
+    case 'middle':
+      return ((element.offer.price >= INITAL_FILTER_PRICE) && (element.offer.price <= FINAL_FILTER_PRICE));
+    case 'low':
+      return (element.offer.price < INITAL_FILTER_PRICE);
+    case 'high':
+      return (element.offer.price > FINAL_FILTER_PRICE);
+  }
+  return (priceFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.rooms === Number(priceFilterValue));
+};
+
+const filterRoomsNumber = (element) => {
+  const roomsFilterValue = document.querySelector('#housing-rooms').querySelector('option:checked').value;
+  return (roomsFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.rooms === Number(roomsFilterValue));
+};
+
+const filterGuestsNumber = (element) => {
+  const guestsFilterValue = document.querySelector('#housing-guests').querySelector('option:checked').value;
+  return (guestsFilterValue === DEFAULT_FILTER_VALUE) ? true : (element.offer.guests === Number(guestsFilterValue));
+};
+
+const filterBenefits = (element) => {
+  const benefitsCheckboxes = document.querySelector('#housing-features').querySelectorAll('input:checked');
+  if (benefitsCheckboxes.length === 0) {
+    return true;
+  }
+  const selectedBenefits = Array.from(benefitsCheckboxes).map((el) => el.value);
+  return (element.offer.features) ? selectedBenefits.every((el) => (element.offer.features.includes(el))) : false;
+};
+
+// const compareNumbers = (firstNumber, secondNumber) => (firstNumber.offer.features.length - secondNumber.offer.features.length);
+
 const renderOffers = (availableOffers) => {
-  availableOffers.forEach((availableOffer) => {
+  const relevantOffers = availableOffers
+    .slice()
+    .filter(filterTypeApartment)
+    .filter(filterPricaApartment)
+    .filter(filterRoomsNumber)
+    .filter(filterGuestsNumber)
+    .filter(filterBenefits)
+    .slice(0, VISIBLE_OFFER_COUNT);
+  relevantOffers.forEach((availableOffer) => {
     const offerElement = offerTemplate.cloneNode(true);
 
     checkContentExistence(availableOffer.offer, OFFER_COMBINED_TEXT_KEYS);
@@ -69,8 +123,9 @@ const renderOffers = (availableOffers) => {
 
     offerListFragment.append(offerElement);
   });
-
+  offersList.querySelectorAll('.popup').forEach((element) => element.remove());
   offersList.append(offerListFragment);
+  createOffersMarker(relevantOffers);
 };
 
 export {renderOffers};

@@ -24,4 +24,15 @@ const switchToEnabledForm = () => {
 
 switchToDisableForm();
 
-export {switchToEnabledForm};
+const setFilterClick = (cb) => {
+  const formFields = document.querySelectorAll('.map__filter');
+  const benefitsCheckboxes = document.querySelector('#housing-features').querySelectorAll('input[name="features"]');
+  formFields.forEach((item) => {
+    item.addEventListener('change', cb);
+  });
+  benefitsCheckboxes.forEach((item) => {
+    item.addEventListener('change', cb);
+  });
+};
+
+export {switchToEnabledForm, setFilterClick};
