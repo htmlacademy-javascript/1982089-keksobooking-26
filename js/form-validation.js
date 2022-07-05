@@ -4,22 +4,6 @@ import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
 import {resetAllImages} from './avatar.js';
 
-
-const resetButton = document.querySelector('.ad-form__reset');
-const offerForm = document.querySelector('.ad-form');
-const filterForm = document.querySelector('.map__filters');
-const roomsField = offerForm.querySelector('#room_number');
-const capacityField = offerForm.querySelector('#capacity');
-const priceField = offerForm.querySelector('#price');
-const typeField = offerForm.querySelector('#type');
-const timeinField = offerForm.querySelector('#timein');
-const timeoutField = offerForm.querySelector('#timeout');
-const ApartmentCapacity = {
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-  '100': ['0'],
-};
 const [MIN_SYMBOLS_TITLE, MAX_SYMBOLS_TITLE] = [30, 100];
 const MAX_PRICE = 100000;
 const MinPrice = {
@@ -29,6 +13,21 @@ const MinPrice = {
   'house': 5000,
   'palace': 10000,
 };
+const ApartmentCapacity = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0'],
+};
+const resetButton = document.querySelector('.ad-form__reset');
+const offerForm = document.querySelector('.ad-form');
+const filterForm = document.querySelector('.map__filters');
+const roomsField = offerForm.querySelector('#room_number');
+const capacityField = offerForm.querySelector('#capacity');
+const priceField = offerForm.querySelector('#price');
+const typeField = offerForm.querySelector('#type');
+const timeinField = offerForm.querySelector('#timein');
+const timeoutField = offerForm.querySelector('#timeout');
 const submitButton = document.querySelector('.ad-form__submit');
 
 const pristine = new Pristine(offerForm, {
@@ -40,23 +39,23 @@ const pristine = new Pristine(offerForm, {
   errorTextClass: 'ad-form__error'
 });
 
-function validateOfferTitle(value) {
+function validateOfferTitle (value) {
   return (value.length >= MIN_SYMBOLS_TITLE && value.length <= MAX_SYMBOLS_TITLE);
 }
 
-function validateOfferPrice(value) {
+function validateOfferPrice (value) {
   return (value.length && Number(value) <= MAX_PRICE && Number(value) >= MinPrice[typeField.value]);
 }
 
-function showMinPriceError() {
+function showMinPriceError () {
   return (`Цена от ${MinPrice[typeField.value]} до ${MAX_PRICE}`);
 }
 
-function validateOfferCapacity() {
+function validateOfferCapacity () {
   return ApartmentCapacity[roomsField.value].includes(capacityField.value);
 }
 
-function showErrorCapacityMessage() {
+function showErrorCapacityMessage () {
   switch(roomsField.value) {
     case '1':
     case '2':
@@ -115,9 +114,12 @@ const updateForm = (cb) => {
   cb();
 };
 
-resetButton.addEventListener('click', () => {
-  resetForm();
-});
+const onResetButtonClick = (cb) => {
+  resetButton.addEventListener('click', () => {
+    resetForm();
+    cb();
+  });
+};
 
 const closeMessage = (element) => {
   const outsideClickListener = (evt) => {
@@ -169,25 +171,28 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-offerForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-  const isValid = pristine.validate();
-  if (isValid) {
-    blockSubmitButton();
-    sendData(
-      () => {
-        resetForm();
-        showSuccessMessage();
-        unblockSubmitButton();
-      },
-      () => {
-        showErrorMessage();
-        unblockSubmitButton();
-      },
-      new FormData(evt.target),
-    );
-  }
-});
+const sendFormData = (cb) => {
+  offerForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    pristine.validate();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          resetForm();
+          showSuccessMessage();
+          unblockSubmitButton();
+          cb();
+        },
+        () => {
+          showErrorMessage();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
-export {MinPrice, MAX_PRICE, typeField, priceField, updateForm};
+export {MinPrice, MAX_PRICE, typeField, priceField, updateForm, sendFormData, onResetButtonClick};

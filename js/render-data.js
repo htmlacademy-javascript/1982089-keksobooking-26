@@ -61,8 +61,6 @@ const filterBenefits = (element) => {
   return (element.offer.features) ? selectedBenefits.every((el) => (element.offer.features.includes(el))) : false;
 };
 
-// const compareNumbers = (firstNumber, secondNumber) => (firstNumber.offer.features.length - secondNumber.offer.features.length);
-
 const renderOffers = (availableOffers) => {
   const relevantOffers = availableOffers
     .slice()
