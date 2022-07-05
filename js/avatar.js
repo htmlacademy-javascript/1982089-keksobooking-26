@@ -28,7 +28,9 @@ const resetImages = (element) => {
     element.src = 'img/muffin-grey.svg';
   } else {
     const elementImg = element.querySelector('img');
-    elementImg.remove();
+    if (elementImg) {
+      elementImg.remove();
+    }
   }
 };
 
