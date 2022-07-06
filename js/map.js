@@ -1,14 +1,9 @@
-import {switchToEnabledForm} from './form.js';
-
 const COORDINATE_PRESICION = 5;
 const MAP_ZOOM = 13;
 const [INITIAL_LAT, INITIAL_LNG] = [35.68172, 139.75392];
 const addressField = document.querySelector('#address');
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    switchToEnabledForm();
-  })
   .setView({
     lat: INITIAL_LAT,
     lng: INITIAL_LNG,

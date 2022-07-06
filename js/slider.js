@@ -16,12 +16,8 @@ noUiSlider.create(slider, {
   step: 1,
   connect: 'lower',
   format: {
-    to: function (value) {
-      return value.toFixed();
-    },
-    from: function (value) {
-      return parseFloat(value);
-    }
+    to: (value) => value.toFixed(),
+    from: (value) => parseFloat(value)
   }
 });
 
@@ -36,7 +32,7 @@ typeField.addEventListener('change', () => {
   priceField.value = '';
 });
 
-slider.noUiSlider.on('update', () => {
+slider.noUiSlider.on('slide', () => {
   priceField.value = slider.noUiSlider.get();
 });
 

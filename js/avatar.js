@@ -4,7 +4,7 @@ const userAvatarChooser = document.querySelector('.ad-form-header__input');
 const apartmentPhoto = document.querySelector('.ad-form__photo');
 const apartmentPhotoChooser = document.querySelector('.ad-form__input');
 
-const showPhotoPreview = (fileChooser, photoPreview) => {
+const photoPreviewHandler = (fileChooser, photoPreview) => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
@@ -39,11 +39,11 @@ const resetAllImages = () => {
 };
 
 userAvatarChooser.addEventListener('change', (evt) => {
-  showPhotoPreview(evt.target, userAvatar);
+  photoPreviewHandler(evt.target, userAvatar);
 });
 
 apartmentPhotoChooser.addEventListener('change', (evt) => {
-  showPhotoPreview(evt.target, apartmentPhoto);
+  photoPreviewHandler(evt.target, apartmentPhoto);
 });
 
 export {resetAllImages};

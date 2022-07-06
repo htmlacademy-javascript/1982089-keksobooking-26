@@ -1,29 +1,33 @@
+const DEFAULT_PRICE_VALUE = ' ₽/ночь';
+const DEFUALT_ROOMS_VALUE = ' комнаты для  гостей';
+const DEFAULT_TIMETABLE_VALUE = 'Заезд после , выезд до ';
+
 const checkElementTextContent = (offerElement, offerClasses) => {
-  for (let i = 0; i < offerClasses.length; i++) {
-    const contentElement = offerElement.querySelector(`.popup__${offerClasses[i]}`);
+  for (const value of offerClasses) {
+    const contentElement = offerElement.querySelector(`.popup__${value}`);
     if ((!contentElement.textContent) ||
-    (contentElement.textContent === ' ₽/ночь') ||
-    (contentElement.textContent === ' комнаты для  гостей') ||
-    (contentElement.textContent === 'Заезд после , выезд до ')) {
+    (contentElement.textContent === DEFAULT_PRICE_VALUE) ||
+    (contentElement.textContent === DEFUALT_ROOMS_VALUE) ||
+    (contentElement.textContent === DEFAULT_TIMETABLE_VALUE)) {
       contentElement.classList.add('visually-hidden');
     }
   }
 };
 
-const hideTextContent = (firstString, secondString) => {
-  if (firstString === '') {
-    secondString = '';
-  } else if (secondString === '') {
-    firstString = '';
+const hideTextContent = (firstElement, secondElement) => {
+  if (firstElement === '') {
+    secondElement = '';
+  } else if (secondElement === '') {
+    firstElement = '';
   }
 
-  return [firstString, secondString];
+  return [firstElement, secondElement];
 };
 
 const checkContentExistence = (offerElement, offerKeys) => {
-  for (let i = 0; i < offerKeys.length; i++) {
-    if ((offerElement[offerKeys[i]] === null) || (offerElement[offerKeys[i]] === undefined)) {
-      offerElement[offerKeys[i]] = '';
+  for (const value of offerKeys) {
+    if ((offerElement[value] === null) || (offerElement[value] === undefined)) {
+      offerElement[value] = '';
     }
   }
 };
