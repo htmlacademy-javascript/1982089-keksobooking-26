@@ -39,23 +39,15 @@ const pristine = new Pristine(offerForm, {
   errorTextClass: 'ad-form__error'
 });
 
-function validateOfferTitle (value) {
-  return (value.length >= MIN_SYMBOLS_TITLE && value.length <= MAX_SYMBOLS_TITLE);
-}
+const validateOfferTitle = (value) => (value.length >= MIN_SYMBOLS_TITLE && value.length <= MAX_SYMBOLS_TITLE);
 
-function validateOfferPrice (value) {
-  return (value.length && Number(value) <= MAX_PRICE && Number(value) >= MinPrice[typeField.value]);
-}
+const validateOfferPrice = (value) => (value.length && Number(value) <= MAX_PRICE && Number(value) >= MinPrice[typeField.value]);
 
-function showMinPriceError () {
-  return (`Цена от ${MinPrice[typeField.value]} до ${MAX_PRICE}`);
-}
+const showMinPriceError = () => (`Цена от ${MinPrice[typeField.value]} до ${MAX_PRICE}`);
 
-function validateOfferCapacity () {
-  return ApartmentCapacity[roomsField.value].includes(capacityField.value);
-}
+const validateOfferCapacity = () => ApartmentCapacity[roomsField.value].includes(capacityField.value);
 
-function showErrorCapacityMessage () {
+const showErrorCapacityMessage = () => {
   switch(roomsField.value) {
     case '1':
     case '2':
@@ -64,7 +56,7 @@ function showErrorCapacityMessage () {
     case '100':
       return 'Недоступно для гостей.';
   }
-}
+};
 
 pristine.addValidator(
   offerForm.querySelector('#title'),
@@ -114,7 +106,7 @@ const updateForm = (cb) => {
   cb();
 };
 
-const onResetButtonClick = (cb) => {
+const resetButtonHandler = (cb) => {
   resetButton.addEventListener('click', () => {
     resetForm();
     cb();
@@ -122,43 +114,43 @@ const onResetButtonClick = (cb) => {
 };
 
 const closeMessage = (element) => {
-  const outsideClickListener = (evt) => {
+  const outsideClickHandler = (evt) => {
     const textElement = element.querySelector('p');
     if (!textElement.contains(evt.target)) {
       document.body.removeChild(element);
-      document.removeEventListener('click', outsideClickListener);
+      document.removeEventListener('click', outsideClickHandler);
     }
   };
 
-  const escapeButtonListener = () => {
+  const escapeButtonHandler = () => {
     document.body.removeChild(element);
-    document.removeEventListener('keydown', escapeButtonListener);
+    document.removeEventListener('keydown', escapeButtonHandler);
   };
 
-  const escapeKeydownListener = (evt) => {
+  const escapeKeydownHandler = (evt) => {
     if (isEscapeKey(evt)) {
       document.body.removeChild(element);
-      document.removeEventListener('keydown', escapeKeydownListener);
+      document.removeEventListener('keydown', escapeKeydownHandler);
     }
   };
-  document.addEventListener('click', outsideClickListener);
-  document.addEventListener('keydown', escapeKeydownListener);
+  document.addEventListener('click', outsideClickHandler);
+  document.addEventListener('keydown', escapeKeydownHandler);
   const errorButton = element.querySelector('.error__button');
   if (errorButton) {
-    errorButton.addEventListener('click', escapeButtonListener);
+    errorButton.addEventListener('click', escapeButtonHandler);
   }
 };
 
 const showSuccessMessage = () => {
-  const messageContainer = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-  document.body.append(messageContainer);
-  closeMessage(messageContainer);
+  const messageElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  document.body.append(messageElement);
+  closeMessage(messageElement);
 };
 
 const showErrorMessage = () => {
-  const messageContainer = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  document.body.append(messageContainer);
-  closeMessage(messageContainer);
+  const messageElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  document.body.append(messageElement);
+  closeMessage(messageElement);
 };
 
 const blockSubmitButton = () => {
@@ -171,7 +163,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const sendFormData = (cb) => {
+const sendFormDataHandler = (cb) => {
   offerForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     pristine.validate();
@@ -195,4 +187,4 @@ const sendFormData = (cb) => {
   });
 };
 
-export {MinPrice, MAX_PRICE, typeField, priceField, updateForm, sendFormData, onResetButtonClick};
+export {MinPrice, MAX_PRICE, typeField, priceField, updateForm, sendFormDataHandler, resetButtonHandler};

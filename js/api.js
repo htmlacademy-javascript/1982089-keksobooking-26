@@ -1,8 +1,11 @@
+import {switchToEnabledForm} from './form.js';
+
 const getData = (onSuccess, onFail) => {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((offers) => {
       onSuccess(offers);
+      switchToEnabledForm();
     })
     .catch(() => {
       onFail('Не удалось загрузить данные с сервера.');
